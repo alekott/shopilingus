@@ -1,22 +1,42 @@
+import java.util.LinkedList;
 import java.util.List;
 
 public class Shop {
 
-    private String name;
-    private String address;
+    private static int nextId = 0;
+
+    public int id;
+    public String name;
+    private Location location;
     private List<ProductDetails> products;
-    private String[] type;
+    private List<String> types;
     private List<Service> services;
     private List<Employee> employees;
 
-    public Shop(String name, String address, String[] type) {
 
+
+    public Shop(String name, int floor, int box, List<String> types) {
+        this.id = Shop.nextId++;
         this.name = name;
-        this.address = address;
-        this.type = type;
+        this.location = new Location(floor, box);
+        this.types = new LinkedList<String>();
+        this.products = new LinkedList<ProductDetails>();
+        this.services = new LinkedList<Service>();
+        this.employees = new LinkedList<Employee>();
     }
 
-    public void hireEmployee(Employee potentialEmployee) {
+    public Shop(String name, int floor, int box) {                  //method overloading - przeladowanie metody
+        this(name, floor, box, new LinkedList<String>());
+    }
+
+
+    public void hire(List<Employee> potentialEmployees) {
+        for (Employee employee : potentialEmployees){
+            this.hire(employee);
+        }
+    }
+
+    public void hire(Employee potentialEmployee) {
         employees.add(potentialEmployee);
     }
 
@@ -51,14 +71,14 @@ public class Shop {
         return searchedProductDetails;
     }
 
-    public void addProduct(Product productToAdd, double quantityToAdd){
+    public void addProduct(Product productToAdd, double quantityToAdd) {
         ProductDetails findByProduct = findProductDetailsByProduct(productToAdd);
-        if(findByProduct == null){
+        if (findByProduct == null) {
             ProductDetails newProductDetails = new ProductDetails(productToAdd, quantityToAdd);
             products.add(newProductDetails);
         } else {
             findByProduct.quantity += quantityToAdd;
         }
     }
-    
+
 }
