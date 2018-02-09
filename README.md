@@ -1,2 +1,0 @@
-# Shopilingus
-Super vim

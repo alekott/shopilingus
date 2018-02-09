@@ -1,7 +1,7 @@
 public class Employee {
 
-    private String name;
-    private String[] skills;
+    public String name;
+    public String[] skills;
     private boolean isAvailable;
 
     public Employee(String name, String[] skills) {

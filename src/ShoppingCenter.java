@@ -4,12 +4,16 @@ import java.util.stream.Collectors;
 
 public class ShoppingCenter {
 
+    private static int nextId = 0;
+
+    private int id;
     private String name;
     private String address;
     private List<Shop> shops;
 
 
     public ShoppingCenter(String name, String address){
+        this.id = ShoppingCenter.nextId++;
         this.name = name;
         this.address = address;
     }
@@ -73,5 +77,57 @@ public class ShoppingCenter {
                 .orElse(null);
     }
 
-    
+    public List<Product> getAllProducts(){
+        List<Product> list = new LinkedList<>();
+        for(Shop shop : shops){
+            for (ProductDetails productDetails : shop.products){
+                list.add(productDetails.product);
+            }
+        }
+        return list;
+    }
+
+
+
+    public List<Service> getAllServices(){
+        List<Service> list = new LinkedList<>();
+        for (Shop shop : shops){
+            for (Service service : shop.services){
+                if (!list.contains(service)) {
+                    list.add(service);
+                }
+            }
+        }
+        return list;
+    }
+
+    public List<String> getAllShopTypes(){
+        List<String> list = new LinkedList<>();
+        for (Shop shop : shops){
+            for (String type : shop.types){
+                if (!list.contains(type)){
+                    list.add(type);
+                }
+            }
+        }
+        return list;
+    }
+
+    public List<String> getAllProductTypes(){
+        List<Product> list = getAllProducts();
+        List<String> typesList = new LinkedList<>();
+        for (Product product : list){
+               if (!typesList.contains(product.type)){
+                   typesList.add(product.type);
+            }
+        }
+        return typesList;
+    }
+
+    public List<String> getAllProductTypes2(){
+        return getAllProducts().stream()
+                .map(product -> product.type)
+                .collect(Collectors.toList());
+    }
+
 }
