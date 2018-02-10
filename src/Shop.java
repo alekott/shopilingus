@@ -14,7 +14,6 @@ public class Shop {
     private List<Employee> employees;
 
 
-
     public Shop(String name, int floor, int box, List<String> types) {
         this.id = Shop.nextId++;
         this.name = name;
@@ -31,7 +30,7 @@ public class Shop {
 
 
     public void hireEmployee(List<Employee> potentialEmployees) {
-        for (Employee employee : potentialEmployees){
+        for (Employee employee : potentialEmployees) {
             this.hireEmployee(employee);
         }
     }
@@ -44,12 +43,12 @@ public class Shop {
         employees.remove(potentialEmployee);
     }
 
-    public void updateEmployee(Employee employeeToUpdate, Employee modifiedEmployee){
+    public void updateEmployee(Employee employeeToUpdate, Employee modifiedEmployee) {
         employeeToUpdate.name = modifiedEmployee.name;
         employeeToUpdate.skills = modifiedEmployee.skills;
     }
 
-    public int getNumberOfEmployees(){
+    public int getNumberOfEmployees() {
         return employees.size();
     }
 
@@ -81,23 +80,25 @@ public class Shop {
     }
 
     public void addProduct(Product productToAdd, double quantityToAdd) {
-        ProductDetails findByProduct = findProductDetailsByProduct(productToAdd);
-        if (findByProduct == null) {
+        ProductDetails productDetails = findProductDetailsByProduct(productToAdd);
+        if (productDetails == null) {
             ProductDetails newProductDetails = new ProductDetails(productToAdd, quantityToAdd);
             products.add(newProductDetails);
         } else {
-            findByProduct.quantity += quantityToAdd;
+            productDetails.quantity += quantityToAdd;
         }
     }
 
-    public Product getProduct(int productId){
+    public Product getProduct(int productId) {
         for (ProductDetails productDetails : products) {
-            if ( productDetails.product.id == productId){
+            if (productDetails.product.id == productId) {
                 return productDetails.product;
             }
         }
         return null;
     }
+
+
 
     /*public void removeProduct(int productId, double quantity){
         Product searchedProduct = getProduct(productId);
@@ -128,22 +129,21 @@ public class Shop {
         this.services.add(service);
     }
 
-    public void deleteService(Service serviceToDelete) {
-        this.services.remove(serviceToDelete);
+    public void deleteService(int serviceId) {
+        this.services.remove(getServiceById(serviceId));
     }
 
-    public Service getServiceById(int serviceId){
-        for ( Service service : services){
-            if (service.id == serviceId){
+    public Service getServiceById(int serviceId) {
+        for (Service service : services) {
+            if (service.id == serviceId) {
                 return service;
             }
         }
         return null;
     }
 
-    public void updateService(int serviceId, Service modifiedService){
-        Service serviceToUpdate = getServiceById(serviceId);
-        deleteService(serviceToUpdate);
+    public void updateService(int serviceId, Service modifiedService) {
+        deleteService(serviceId);
         modifiedService.id = serviceId;
         addService(modifiedService);
     }

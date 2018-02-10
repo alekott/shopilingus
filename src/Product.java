@@ -3,11 +3,9 @@ public class Product {
     private static  int nextId = 0;
 
     public int id;
-    private String name;
-    private double price;
     public String type;
-    private String size;
-    private double weight;
+    public String name;
+    private double price;
     private double tax;
 
 
@@ -19,4 +17,7 @@ public class Product {
         this.tax = tax;
     }
 
+    public String getFullName(){
+        return this.name;
+    }
 }
