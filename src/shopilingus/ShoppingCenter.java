@@ -1,3 +1,5 @@
+package shopilingus;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +23,11 @@ public class ShoppingCenter {
         this.address = address;
     }
 
-    /*private void addShop(Shop shop){
+    public List<Shop> getALLShops() {
+        return shops;
+    }
+
+    /*private void addShop(shopilingus.Shop shop){
         for(int i = 0; i < this.shops.size(); i++){
             if(shops.get(i).name.equals(shop.name)){
                 return;
@@ -36,8 +42,8 @@ public class ShoppingCenter {
     }
 
     /*
-    public Shop getShop(int shopId){
-        for( Shop shop : shops){
+    public shopilingus.Shop getShop(int shopId){
+        for( shopilingus.Shop shop : shops){
             if(shop.id == shopId){
                 return shop;
             }
@@ -48,7 +54,7 @@ public class ShoppingCenter {
 
     public void updateShop(int shopId, Shop modifiedShop) {
         deleteShop(shopId);
-        modifiedShop.id = shopId;
+        modifiedShop.setId(shopId);
         addShop(modifiedShop);
     }
 
@@ -57,9 +63,9 @@ public class ShoppingCenter {
     }
 
     /*
-    public List<Shop> findShopsByName(String name){
-        List<Shop> list = new LinkedList<Shop>();
-        for (Shop shop : shops){
+    public List<shopilingus.Shop> findShopsByName(String name){
+        List<shopilingus.Shop> list = new LinkedList<shopilingus.Shop>();
+        for (shopilingus.Shop shop : shops){
             if(shop.name.equals(name)){
                 list.add(shop);
             }
@@ -69,13 +75,13 @@ public class ShoppingCenter {
     */
     public List<Shop> findShopsByName(final String name) {
         return shops.stream()
-                .filter(shop -> shop.name.equals(name))
+                .filter(shop -> shop.getName().equals(name))
                 .collect(Collectors.toList());
     }
 
     public Shop getShop(int shopId) {
         return shops.stream()
-                .filter(shop -> shop.id == shopId)
+                .filter(shop -> shop.getId() == shopId)
                 .findAny()
                 .orElse(null);
     }
@@ -83,8 +89,8 @@ public class ShoppingCenter {
     public List<Product> getAllProducts() {
         List<Product> list = new LinkedList<>();
         for (Shop shop : shops) {
-            for (ProductDetails productDetails : shop.products) {
-                list.add(productDetails.product);
+            for (ProductDetails productDetails : shop.getProducts()) {
+                list.add(productDetails.getProduct());
             }
         }
         return list;
@@ -94,7 +100,7 @@ public class ShoppingCenter {
     public List<Service> getAllServices() {
         List<Service> list = new LinkedList<>();
         for (Shop shop : shops) {
-            for (Service service : shop.services) {
+            for (Service service : shop.getServices()) {
                 if (!list.contains(service)) {
                     list.add(service);
                 }
@@ -103,28 +109,28 @@ public class ShoppingCenter {
         return list;
     }
 
-    public List<String> getAllShopTypes() {
-        List<String> list = new LinkedList<>();
+    public List<ShopType> getAllShopTypes() {
+        List<ShopType> list = new LinkedList<>();
         for (Shop shop : shops) {
-            for (String type : shop.types) {
+            for (ShopType type : shop.getTypes()) {
                 list.add(type);
             }
         }
         return list;
     }
 
-    public Set<String> getAllProductTypes() {
+    public Set<ProductType> getAllProductTypes() {
         List<Product> list = getAllProducts();
-        Set<String> typesList = new HashSet<>();
+        Set<ProductType> typesList = new HashSet<>();
         for (Product product : list) {
-            typesList.add(product.type);
+            typesList.add(product.getType());
         }
         return typesList;
     }
 
-    public Set<String> getAllProductTypes2() {
+    public Set<ProductType> getAllProductTypes2() {
         return getAllProducts().stream()
-                .map(product -> product.type)
+                .map(product -> product.getType())
                 .collect(Collectors.toSet());
     }
 

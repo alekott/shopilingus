@@ -1,3 +1,5 @@
+package shopilingus;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -5,34 +7,77 @@ public class Shop {
 
     private static int nextId = 0;
 
-    public int id;
-    public String name;
+    private int id;
+    private String name;
     private Location location;
-    public List<ProductDetails> products;
-    public List<String> types;
-    public List<Service> services;
+    private List<ProductDetails> products;
+    private List<ShopType> types;
+    private List<Service> services;
     private List<Employee> employees;
 
 
-    public Shop(String name, int floor, int box, List<String> types) {
+    public Shop(String name, int floor, int box, List<ShopType> types) {
         this.id = Shop.nextId++;
         this.name = name;
         this.location = new Location(floor, box);
-        this.types = new LinkedList<String>();
+        this.types = types;
         this.products = new LinkedList<ProductDetails>();
         this.services = new LinkedList<Service>();
         this.employees = new LinkedList<Employee>();
     }
 
     public Shop(String name, int floor, int box) {                  //method overloading - przeladowanie metody
-        this(name, floor, box, new LinkedList<String>());
+        this(name, floor, box, new LinkedList<ShopType>());
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<ProductDetails> getProducts() {
+        return products;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+    public List<ShopType> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<ShopType> types) {
+        this.types = types;
+    }
 
     public void hireEmployee(List<Employee> potentialEmployees) {
         for (Employee employee : potentialEmployees) {
             this.hireEmployee(employee);
         }
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void hireEmployee(Employee potentialEmployee) {
@@ -44,8 +89,8 @@ public class Shop {
     }
 
     public void updateEmployee(Employee employeeToUpdate, Employee modifiedEmployee) {
-        employeeToUpdate.name = modifiedEmployee.name;
-        employeeToUpdate.skills = modifiedEmployee.skills;
+        employeeToUpdate.setName(modifiedEmployee.getName());
+        employeeToUpdate.setSkills(modifiedEmployee.getSkills());
     }
 
     public int getNumberOfEmployees() {
@@ -54,16 +99,16 @@ public class Shop {
 
 
 
-    /*void addProduct(Product productToAdd, double quantityToAdd) {
+    /*void addProduct(shopilingus.Product productToAdd, double quantityToAdd) {
         boolean contains = false;
-        for(ProductDetails productDetails : products) {
+        for(shopilingus.ProductDetails productDetails : products) {
             if (productDetails.product.equals(productToAdd)) {
                 productDetails.quantity += quantityToAdd;
                 contains = true;
             }
         }
         if(contains){
-            ProductDetails newProductDetails = new ProductDetails(productToAdd, quantityToAdd);
+            shopilingus.ProductDetails newProductDetails = new shopilingus.ProductDetails(productToAdd, quantityToAdd);
             products.add(newProductDetails);
         }
     }
@@ -72,7 +117,7 @@ public class Shop {
     public ProductDetails findProductDetailsByProduct(Product productToFind) {
         ProductDetails searchedProductDetails = null;
         for (ProductDetails productDetails : products) {
-            if (productDetails.product.equals(productToFind)) {
+            if (productDetails.getProduct().equals(productToFind)) {
                 searchedProductDetails = productDetails;
             }
         }
@@ -85,14 +130,14 @@ public class Shop {
             ProductDetails newProductDetails = new ProductDetails(productToAdd, quantityToAdd);
             products.add(newProductDetails);
         } else {
-            productDetails.quantity += quantityToAdd;
+            productDetails.addQuantity(quantityToAdd);
         }
     }
 
     public Product getProduct(int productId) {
         for (ProductDetails productDetails : products) {
-            if (productDetails.product.id == productId) {
-                return productDetails.product;
+            if (productDetails.getProduct().getId() == productId) {
+                return productDetails.getProduct();
             }
         }
         return null;
@@ -101,8 +146,8 @@ public class Shop {
 
 
     /*public void removeProduct(int productId, double quantity){
-        Product searchedProduct = getProduct(productId);
-        ProductDetails findByProduct = findProductDetailsByProduct(searchedProduct);
+        shopilingus.Product searchedProduct = getProduct(productId);
+        shopilingus.ProductDetails findByProduct = findProductDetailsByProduct(searchedProduct);
         findByProduct.quantity -= quantity;
         if (findByProduct.quantity == 0){
             products.remove(findByProduct);
@@ -112,7 +157,7 @@ public class Shop {
 
     public void deleteProduct(int productId) {
         for (ProductDetails productDetails : products) {
-            if (productDetails.product.id == productId) {
+            if (productDetails.getProduct().getId() == productId) {
                 this.products.remove(productDetails);
             }
         }
@@ -121,8 +166,8 @@ public class Shop {
     public void updateProduct(int productId, Product modifiedProduct) {
         ProductDetails productDetails = findProductDetailsByProduct(getProduct(productId));
         deleteProduct(productId);
-        modifiedProduct.id = productId;
-        addProduct(modifiedProduct, productDetails.quantity);
+        modifiedProduct.setId(productId);
+        addProduct(modifiedProduct, productDetails.getQuantity());
     }
 
     public void addService(Service service) {
@@ -135,7 +180,7 @@ public class Shop {
 
     public Service getServiceById(int serviceId) {
         for (Service service : services) {
-            if (service.id == serviceId) {
+            if (service.getId() == serviceId) {
                 return service;
             }
         }
@@ -144,7 +189,7 @@ public class Shop {
 
     public void updateService(int serviceId, Service modifiedService) {
         deleteService(serviceId);
-        modifiedService.id = serviceId;
+        modifiedService.setId(serviceId);
         addService(modifiedService);
     }
 
